@@ -1,8 +1,7 @@
-
-<?php 
+<?php
+session_start(); 
 require_once "conn.php";
 ?>
-
 
 <!doctype html>
 <html lang="en">
@@ -15,6 +14,7 @@ require_once "conn.php";
   <body>
     <?php include('navbar.php');?>
     <div class="container mt-4">
+        <?php include('mensagem.php')?>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
