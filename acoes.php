@@ -13,17 +13,3 @@ $result = $stmt->execute([$_POST['nome'],$_POST['email'],$_POST['data_nascimento
     echo 'Error' . $e->getMessage();
 }
 
-
-
-/*
-
-    $nome = mysqli_real_escape_string(
-    $email = mysqli_real_escape_string($con, trim($_POST['email']));
-    $data_nascimento = mysqli_real_escape_string($con, trim($_POST['data_nascimento']));
-    $senha = isset($_POST['senha']) ? mysqli_real_escape_string($con, trim($_POST['senha'])) : '';
-
-    $stmt = $con->prepare("INSERT INTO usuarios(nome,email,data_nascimento,senha) VALUES ('$nome','$email','$data_nascimento','$senha')");
-    $result = $stmt->execute();
-
-   // mysqli_query($con,$sql);*/
-
