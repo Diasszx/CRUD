@@ -35,11 +35,19 @@ require_once "conn.php";
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php
+                                    $stmt = $conn->query("SELECT * FROM usuario");
+                                    
+                                    if($stmt->rowCount() > 0 ){
+                                        $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                        foreach($usuarios as $usuario){
+                                ?>
                                 <tr>
-                                    <td>1</td>
-                                    <td>adam dias</td>
-                                    <td>adam@gmail.com</td>
-                                    <td>13/05/03</td>
+                                    <td><?=$usuario['id']?></td>
+                                    <td><?=$usuario['nome']?></td>
+                                    <td><?=$usuario['email']?></td>
+                                    <td><?=$usuario['data_nascimento']?></td>
                                     <td>
                                         <a href="" class="btn btn-secondary btn-sm">Visualizar</a> 
                                         <a href="" class="btn btn-success btn-sm">Editar</a> 
@@ -48,6 +56,12 @@ require_once "conn.php";
                                         </form> 
                                         </td>
                                         </tr>
+                                        <?php
+                                        }
+                                    }else {
+                                        echo '<h5>Nenhum usuário encontrado</h5>';
+                                    }
+                                    ?>
                                         <td>
                                     </td>
                             </tbody>
