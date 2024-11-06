@@ -47,10 +47,10 @@ require_once "conn.php";
                                     <td><?=$usuario['id']?></td>
                                     <td><?=$usuario['nome']?></td>
                                     <td><?=$usuario['email']?></td>
-                                    <td><?=$usuario['data_nascimento']?></td>
+                                    <td><?=date('d/m/Y',strtotime($usuario['data_nascimento']))?></td>
                                     <td>
-                                        <a href="" class="btn btn-secondary btn-sm">Visualizar</a> 
-                                        <a href="" class="btn btn-success btn-sm">Editar</a> 
+                                        <a href="usuario-view.php?id=<?=$usuario['id']?>" class="btn btn-secondary btn-sm">Visualizar</a> 
+                                        <a href="usuario-edit.php?id=<?=$usuario['id']?>" class="btn btn-success btn-sm">Editar</a> 
                                         <form action="" method="POST" class="d-inline">
                                             <button type="submit" name="delete_usuario" value="1" class="btn btn-danger btn-sm">Excluir</button>
                                         </form> 
