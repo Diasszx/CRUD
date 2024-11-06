@@ -28,20 +28,20 @@ try{
     if(isset($_POST['update_usuario'])){
         $usuario_id = $_POST['id'];
         //$hashedPassword = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("UPDATE usuarios SET (nome, email, data_nascimento, senha) VALUES (?,?,?,?)");
-        if(!empty($senha)){
-            $stmt .=", senha='" . password_hash($_POST, PASSWORD_DEFAULT) . "'";
+        $hashedPassword = '';
+        if (!empty($_POST['senha'])) {
+            $hashedPassword = password_hash($_POST['senha'], PASSWORD_DEFAULT);
         }
-        $stmt .= "WHERE id = '$usuario_id";
-
-        $result = $stmt->execute([$_POST['nome'],$_POST['email'],$_POST['data_nascimento'], $hashedPassword]);
+        
+        $stmt = $conn->prepare("UPDATE usuario SET nome = ?, email = ?, data_nascimento = ?, senha = ? WHERE id = ?");
+        $result = $stmt->execute([$_POST['nome'],$_POST['email'],$_POST['data_nascimento'], $hashedPassword ?: null, $usuario_id]);
     
-        if($stmt->rowCount() > 0 ){
-            $_SESSION['mensagem'] = "Usuário criado com sucesso!";
+        if($result){
+            $_SESSION['mensagem'] = "Usuário atualizado com sucesso!";
             header('Location: index.php');
             exit;
         }else{
-            $_SESSION['mensagem'] = "Usuário não foi criado!";
+            $_SESSION['mensagem'] = "Erro ao atulizar usuário!";
             header('Location: index.php');
             exit;
         }
