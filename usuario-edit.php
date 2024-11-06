@@ -1,3 +1,7 @@
+<?php
+session_start();
+require_once 'conn.php';
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -18,27 +22,46 @@
               </h4>
             </div>
             <div class=""card-body>
+                <?php
+                if(isset($_GET['id'])){
+                    $usuario_id = $_GET['id'];
+                    $stmt = $conn->prepare("SELECT * FROM usuario WHERE id=:id");
+                    $stmt->bindParam(':id', $usuario_id, PDO::PARAM_INT);
+                    $stmt->execute();
+
+                    if($stmt->rowCount() > 0){
+                        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+                    }
+                ?>
               <form action="acoes.php" method="POST">
+                <input type="hidden" name="usuario_id" value=<?=$usuario["id"]?>>
                 <div class="mb-3">
                   <label>Nome</label>
-                  <input type="text" name="nome" class="form-control">
+                  <input type="text" name="nome" value="<?=$usuario['nome']?>" class="form-control">
                 </div>
                 <div class="mb-3">
                   <label>Email</label>
-                  <input type="text" name="email" class="form-control">
+                  <input type="text" name="email" value="<?=$usuario['email']?>" class="form-control">
                 </div>
                 <div class="mb-3">
                   <label>Data nascimento</label>
-                  <input type="date" name="data_nascimento" class="form-control">
+                  <input type="date" name="data_nascimento" value="<?=['data_nascimento']?>" class="form-control">
                 </div>
                 <div class="mb-3">
                   <label>Senha</label>
                   <input type="password" name="senha" class="form-control">
                 </div>
                 <div class="mb-3">
-                  <button type="submit" name="create_usuario" class="btn btn-primary">Salvar</button>
+                  <button type="submit" name="update_usuario" class="btn btn-primary">Salvar</button>
                 </div>
               </form>
+              <?php
+              }else{
+                echo "<h5>Usuário não encontrado</h5>";
+              }
+            //}
+            ?>
+              ?>
             </div>
           </div>
         </div>
