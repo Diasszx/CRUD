@@ -25,16 +25,26 @@ try{
 
 // UPDATE
 try{
+
     if(isset($_POST['update_usuario'])){
         $usuario_id = $_POST['id'];
         //$hashedPassword = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-        $hashedPassword = '';
+        $fields = ['nome' => $_POST['nome'], 'email' => $_POST['email'], 'data_nascimento' => $_POST['data_nascimento']];
+        $query = "UPDATE usuario SET nome = :nome, email = :email, data_nascimento = :data_nascimento";
+        
+        //$hashedPassword = '';
         if (!empty($_POST['senha'])) {
-            $hashedPassword = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+            $fields['senha'] = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+            $query .= ", senha = :senha";
         }
         
-        $stmt = $conn->prepare("UPDATE usuario SET nome = ?, email = ?, data_nascimento = ?, senha = ? WHERE id = ?");
-        $result = $stmt->execute([$_POST['nome'],$_POST['email'],$_POST['data_nascimento'], $hashedPassword ?: null, $usuario_id]);
+        $query .= " WHERE id = :id";
+        $fields['id'] = $usuario_id;
+        
+        // $stmt = $conn->prepare("UPDATE usuario SET nome = ?, email = ?, data_nascimento = ?, senha = ? WHERE id = ?");
+        // $result = $stmt->execute([$_POST['nome'],$_POST['email'],$_POST['data_nascimento'], $hashedPassword ?: null, $usuario_id]);
+        $stmt = $conn->prepare($query);
+        $result = $stmt->execute($fields);
     
         if($result){
             $_SESSION['mensagem'] = "Usuário atualizado com sucesso!";
@@ -50,4 +60,24 @@ try{
         echo 'Error' . $e->getMessage();
     } 
 
-
+    if (isset($_POST['delete_usuario'])) {
+        $usuario_id = $_POST['delete_usuario'];
+    
+        // Prepara e executa o comando DELETE usando PDO
+        $stmt = $conn->prepare("DELETE FROM usuario WHERE id=:id");
+        $stmt->bindParam(':id', $usuario_id, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        // Verifica se houve linhas afetadas
+        if ($stmt->rowCount() > 0) {
+            $_SESSION['message'] = 'Usuário deletado com sucesso';
+        } else {
+            $_SESSION['message'] = 'Usuário não foi deletado';
+        }
+    
+        // Redireciona para index.php após o processo
+        header('Location: index.php');
+        exit;
+    }
+    
+    //$result = $stmt->execute([$_POST['nome'],$_POST['email'],$_POST['data_nascimento'], $hashedPassword])

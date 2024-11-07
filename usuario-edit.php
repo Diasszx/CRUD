@@ -21,7 +21,7 @@ require_once 'conn.php';
                 <a href="index.php" class="btn btn-danger float-end">Voltar</a>
               </h4>
             </div>
-            <div class=""card-body>
+            <div class="card-body">
                 <?php
                 if(isset($_GET['id'])){
                     $usuario_id = $_GET['id'];
@@ -34,7 +34,7 @@ require_once 'conn.php';
                     }
                 ?>
               <form action="acoes.php" method="POST">
-                <input type="hidden" name="usuario_id" value=<?=$usuario["id"]?>>
+                <input type="hidden" name="id" value=<?=$usuario["id"]?>>
                 <div class="mb-3">
                   <label>Nome</label>
                   <input type="text" name="nome" value="<?=$usuario['nome']?>" class="form-control">
@@ -45,7 +45,7 @@ require_once 'conn.php';
                 </div>
                 <div class="mb-3">
                   <label>Data nascimento</label>
-                  <input type="date" name="data_nascimento" value="<?=['data_nascimento']?>" class="form-control">
+                  <input type="date" name="data_nascimento" value="<?=$usuario['data_nascimento']?>" class="form-control">
                 </div>
                 <div class="mb-3">
                   <label>Senha</label>

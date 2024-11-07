@@ -10,7 +10,8 @@ require_once "conn.php";
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Usuários</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  </head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+</head>
   <body>
     <?php include('navbar.php');?>
     <div class="container mt-4">
@@ -49,11 +50,16 @@ require_once "conn.php";
                                     <td><?=$usuario['email']?></td>
                                     <td><?=date('d/m/Y',strtotime($usuario['data_nascimento']))?></td>
                                     <td>
-                                        <a href="usuario-view.php?id=<?=$usuario['id']?>" class="btn btn-secondary btn-sm">Visualizar</a> 
-                                        <a href="usuario-edit.php?id=<?=$usuario['id']?>" class="btn btn-success btn-sm">Editar</a> 
-                                        <form action="" method="POST" class="d-inline">
-                                            <button type="submit" name="delete_usuario" value="1" class="btn btn-danger btn-sm">Excluir</button>
+                                        <a href="usuario-view.php?id=<?=$usuario['id']?>" class="btn btn-secondary btn-sm"><span class="bi-eye-fill"></span>&nbsp;Visualizar</a> 
+                                        <a href="usuario-edit.php?id=<?=$usuario['id']?>" class="btn btn-success btn-sm"><span class="bi-pencil-fill"></span>&nbsp;Editar</a> 
+                                        <form action="acoes.php" method="POST" class="d-inline" onsubmit="return confirmDelete();">
+                                            <button type="submit" name="delete_usuario" value="<?=$usuario['id']?>" class="btn btn-danger btn-sm"><span class="bi-trash-fill"></span>&nbsp;Excluir</button>
                                         </form> 
+                                        <script>
+                                            function confirmDelete(){
+                                                return confirm("Você tem certeza que deseja excluir este usuário?")
+                                            }
+                                        </script>
                                         </td>
                                         </tr>
                                         <?php
